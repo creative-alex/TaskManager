@@ -1,0 +1,451 @@
+:root {
+    --bg: #ebf0f7;
+    --header: #fbf4f6;
+    --text: #2e2e2f;
+    --white: #ffffff;
+    --light-grey: #c4cad3; 
+    --tag-1: #ceecfd;
+    --tag-1-text: #2e87ba;
+    --tag-2: #d6ede2;
+    --tag-2-text: #13854e;
+    --tag-3: #ceecfd;
+    --tag-3-text: #2d86ba;
+    --tag-4: #f2dcf5;
+    --tag-4-text: #a734ba;
+    --purple: #7784ee;
+    --progress-new-tasks: #d6e8fc;
+    --progress-new-tasks-value: #2e87ba;
+    --progress-in-progress: #fce4d6;
+    --progress-in-progress-value: #f39952;
+    --progress-needs-review: #f9d6e8;
+    --progress-needs-review-value: #d64592;
+    --progress-done: #d6fcd6;
+    --progress-done-value: #4caf50;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  body {
+    color: var(--text);
+  }
+  
+ 
+  
+  h1 {
+    font-size: 30px;
+  }
+  
+  .project {
+    padding: 2rem;
+    max-width: 75%;
+    width: 100%;
+    display: inline-block;
+    background-color: var(--bg);
+    width: 100%;
+    min-height: 100vh;
+  }
+  
+  .project-info {
+    padding: 2rem 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .project-participants {
+    display: flex;
+    align-items: center;
+  }
+  
+  .project-participants span,
+  .project-participants__add {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    background: var(--purple);
+    border-radius: 100rem;
+    margin: 0 0.2rem;
+  }
+  
+  .project-participants__add {
+    background: transparent;
+    border: 1px dashed rgb(150, 150, 150);
+    font-size: 0;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .project-participants__add::after {
+    content: '+';
+    font-size: 15px;
+    color: rgb(150, 150, 150);
+  }
+  
+  .project-tasks {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    grid-column-gap: 1.5rem;
+  }
+  
+  .project-column-heading {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .project-column-heading__title {
+    font-size: 20px;
+  }
+  
+  .project-column-heading__options {
+    background: transparent;
+    color: var(--light-grey);
+    font-size: 18px;
+    border: 0;
+    cursor: pointer;
+  }
+  
+  .task {
+    position: relative;
+    cursor: move;
+    background-color: var(--white);
+    padding: 1rem;
+    border-radius: 8px;
+    width: 100%;
+    box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+    margin-bottom: 1rem;
+    border: 3px dashed transparent;
+  }
+
+  .task__add {
+    margin-top: auto; 
+    padding: 10px 20px;
+    background-color: transparent !important;
+    color: black;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    display: flex; /* Flexbox para centralizar o botão */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+  }
+
+ 
+
+  .task__delete {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: transparent !important;
+    color: black;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .task__delete:hover {
+    background-color: darkred;
+  }
+  
+  .task:hover {
+    box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+    border-color: rgba(162, 179, 207, 0.2) !important;
+  }
+  
+  .task p {
+    font-size: 15px;
+    margin: 1.2rem 0;
+  }
+  
+  .task__tag {
+    border-radius: 100px;
+    padding: 2px 13px;
+    font-size: 12px;
+  }
+  
+  .task__tag--cenas {
+    color: var(--tag-4-text);
+    background-color: var(--tag-4);
+  }
+  
+  .task__tag--design {
+    color: var(--tag-3-text);
+    background-color: var(--tag-3);
+  }
+  
+  .task__tag--illustration {
+    color: var(--tag-2-text);
+    background-color: var(--tag-2);
+  }
+  
+  .task__tags {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .task__options {
+    background: transparent;
+    border: 0;
+    color: var(--light-grey);
+    font-size: 17px;
+  }
+  
+  .task__stats {
+    position: relative;
+    width: 100%;
+    color: var(--light-grey);
+    font-size: 12px;
+  }
+  
+  .task__stats span:not(:last-of-type) {
+    margin-right: 1rem;
+  }
+  
+  
+  .task-details {
+    width: 24%;
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    padding: 3rem 2rem;
+  }
+  
+  .tag-progress {
+    margin: 1.5rem 0;
+  }
+  
+  .tag-progress h2 {
+    font-size: 16px;
+    margin-bottom: 1rem;
+  }
+  
+  .tag-progress p {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .tag-progress p span {
+    color: rgb(180, 180, 180);
+  }
+  
+  .progress {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    border-radius: 10px;
+    height: 10px;
+  }
+  
+  .progress::-webkit-progress-bar,
+  .progress::-webkit-progress-value {
+    border-radius: 10px;
+  }
+  
+  .progress--new-tasks::-webkit-progress-bar {
+    background-color: var(--progress-new-tasks);
+  }
+
+  .progress--new-tasks::-webkit-progress-value {
+    background-color: var(--progress-new-tasks-value);
+  }
+
+  .progress--in-progress::-webkit-progress-bar {
+    background-color: var(--progress-in-progress);
+  }
+
+  .progress--in-progress::-webkit-progress-value {
+    background-color: var(--progress-in-progress-value);
+  }
+
+  .progress--needs-review::-webkit-progress-bar {
+    background-color: var(--progress-needs-review);
+  }
+
+  .progress--needs-review::-webkit-progress-value {
+    background-color: var(--progress-needs-review-value);
+  }
+
+  .progress--done::-webkit-progress-bar {
+    background-color: var(--progress-done);
+  }
+
+  .progress--done::-webkit-progress-value {
+    background-color: var(--progress-done-value);
+  }
+  
+  .task-activity h2 {
+    font-size: 16px;
+    margin-bottom: 1rem;
+  }
+  
+  .task-activity li {
+    list-style: none;
+    margin: 1rem 0;
+    padding: 0rem 1rem 1rem 3rem;
+    position: relative;
+  }
+  
+  .task-activity time {
+    display: block;
+    color: var(--light-grey);
+  }
+  
+  .task-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 100rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .task-icon--attachment {
+    background-color: #fba63c;
+  }
+  
+  .task-icon--comment {
+    background-color: #5dc983;
+  }
+  
+  .task-icon--edit {
+    background-color: #7784ee;
+  }
+  
+/* Estilos do Modal */
+.modal {
+    display: none;  /* O modal começa oculto */
+    position: absolute;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 17vw; /* Largura mantida conforme solicitado */
+    height: auto; /* Permitir altura dinâmica com base no conteúdo */
+    max-height: 80vh; /* Limitar a altura máxima do modal */
+    border-radius: 12px;  /* Cantos arredondados */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);  /* Sombras mais pronunciadas */
+    padding: 20px; /* Espaçamento interno mais confortável */
+    overflow: hidden; /* Evitar que o conteúdo ultrapasse os limites do modal */
+}
+
+/* Quando o modal estiver visível */
+.modal.show {
+    display: block;  /* O modal fica visível */
+}
+
+/* Conteúdo do Modal */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;  /* Ajuste do padding para espaçamento adequado */
+    border-radius: 10px;  /* Cantos arredondados */
+    border: none;  /* Sem borda para um visual mais limpo */
+    max-height: 70vh;  /* Max altura do conteúdo do modal */
+    overflow-y: auto;  /* Barra de rolagem caso o conteúdo ultrapasse a altura */
+    box-sizing: border-box; /* Garantir que o padding não altere o tamanho do conteúdo */
+}
+
+/* Fechar o modal */
+.close {
+    color: #555;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transition: color 0.3s ease;  /* Transição de cor suave */
+}
+
+/* Efeito ao passar o mouse sobre o botão de fechar */
+.close:hover,
+.close:focus {
+    color: #e74c3c;  /* Cor mais destacada */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+
+  @media only screen and (max-width: 1300px) {
+    .project {
+      max-width: 100%;
+    }
+  
+    .task-details {
+        width: 100%; 
+        display: flex;
+        flex-direction: column; 
+        background-color: var(--white); 
+        padding: 1rem; 
+        box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px; 
+        border-radius: 8px; 
+    }
+    
+  
+    .tag-progress,
+    .task-activity {
+      flex-basis: 50%;
+      background: var(--white);
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem;
+    }
+  }
+  
+  @media only screen and (max-width: 1000px) {
+    .project-column:nth-child(2),
+    .project-column:nth-child(3) {
+      display: none;
+    }
+  
+    .project-tasks {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .project-column:nth-child(4) {
+      display: none;
+    }
+  
+    .project-tasks {
+      grid-template-columns: 1fr;
+    }
+  
+    .task-details {
+      flex-wrap: wrap;
+      padding: 3rem 1rem;
+    }
+  
+    .tag-progress,
+    .task-activity {
+      flex-basis: 100%;
+      
+    }
+  
+    h1 {
+      font-size: 25px;
+    }
+  }
+  
