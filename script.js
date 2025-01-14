@@ -208,4 +208,96 @@ taskForm.addEventListener('submit', function (event) {
   document.querySelectorAll('.task__add').forEach(button => button.style.display = 'block');
 });
 
+
+const tasks = document.querySelectorAll('.task');
+const contextMenu = document.getElementById('customContextMenu');
+
+tasks.forEach(task => {
+  task.addEventListener('contextmenu', (event) => {
+    event.preventDefault(); // Previne o menu padrão
+
+    // Posiciona o menu no local do clique
+    contextMenu.style.display = 'block';
+    contextMenu.style.left = `${event.pageX}px`;
+    contextMenu.style.top = `${event.pageY}px`;
+
+    // Armazena a tarefa alvo no menu
+    contextMenu.setAttribute('data-target-task', task.dataset.taskId || task.id);
+  });
+});
+
+// Oculta o menu ao clicar em qualquer lugar
+document.addEventListener('click', () => {
+  contextMenu.style.display = 'none';
+});
+
+// Lida com as ações do menu
+contextMenu.addEventListener('click', (event) => {
+  const action = event.target.dataset.action;
+  const targetTaskId = contextMenu.getAttribute('data-target-task');
+  const targetTask = document.getElementById(targetTaskId);
+
+  if (action === 'edit' && targetTask) {
+    // Selecionar os elementos existentes
+    const taskText = targetTask.querySelector('p');
+    const taskCategory = targetTask.querySelector('.task__tag');
+
+    // Criar os elementos editáveis
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = taskText.textContent;
+    input.className = 'task__edit-input';
+
+    const select = document.createElement('select');
+    select.className = 'task__edit-select';
+    const categories = [
+      { value: 'cenas', label: 'Coisa das Cenas' },
+      { value: 'coisas', label: 'Coisas Coisantes' },
+      { value: 'illustration', label: 'Illustration' },
+    ];
+
+    categories.forEach((category) => {
+      const option = document.createElement('option');
+      option.value = category.value;
+      option.textContent = category.label;
+      option.selected = taskCategory.classList.contains(`task__tag--${category.value}`);
+      select.appendChild(option);
+    });
+
+    // Substituir os elementos existentes pelos editáveis
+    taskText.replaceWith(input);
+    taskCategory.replaceWith(select);
+
+    // Adicionar um botão de salvar
+    const saveButton = document.createElement('button');
+    saveButton.textContent = 'Save';
+    saveButton.className = 'task__save-button';
+    targetTask.appendChild(saveButton);
+
+    // Lógica para salvar alterações
+    saveButton.addEventListener('click', () => {
+      // Atualizar o texto e a categoria
+      taskText.textContent = input.value;
+      taskCategory.textContent = select.options[select.selectedIndex].text;
+      taskCategory.className = `task__tag task__tag--${select.value}`;
+
+      // Reverter os campos para o estado original
+      input.replaceWith(taskText);
+      select.replaceWith(taskCategory);
+      saveButton.remove();
+    });
+  } else if (action === 'delete' && targetTask) {
+    // Lógica de remoção
+    targetTask.remove();
+    alert('Tarefa removida!');
+  } else if (action === 'move') {
+    alert('Mover tarefa: ' + (targetTask ? targetTask.textContent : 'Tarefa não encontrada!'));
+    // Adiciona lógica de movimento aqui
+  }
+
+  // Esconde o menu após selecionar uma ação
+  contextMenu.style.display = 'none';
+});
+
+
   });
