@@ -127,42 +127,85 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     });
 
-    const addButtons = document.querySelectorAll('.task__add');
-const modal = document.getElementById('taskModal');
-const closeButton = document.querySelector('.close');
 
-// Mostrar o modal ao clicar no botão
-addButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const buttonRect = button.getBoundingClientRect(); // Pega a posição do botão
-      const modalContent = modal.querySelector('.modal-content');
-  
-      // Posiciona o modal sobre o botão com um pequeno espaçamento
-      modal.style.display = 'block';
-      modal.style.left = `${buttonRect.left}px`; // Ajusta a posição horizontal
-      modal.style.top = `${buttonRect.top + buttonRect.height + 5}px`; // Ajusta a posição vertical (com margem de 5px)
-  
-      // Esconde o botão clicado
-      button.style.display = 'none';
+// Selecionar os elementos do DOM
+const buttonsAdicionar = document.querySelectorAll('.task__add');
+const janelaModal = document.getElementById('taskModal');
+const botaoFechar = document.querySelector('.close');
+
+buttonsAdicionar.forEach(botao => {
+    botao.addEventListener('click', function () {
+        // Esconde o botão atual
+        botao.style.display = 'none';
+
+        // Insere a janela modal *imediatamente após* o botão
+        botao.insertAdjacentElement('afterend', janelaModal);
+
+        // Exibe a janela modal
+        janelaModal.style.display = 'block';
     });
+});
+
+botaoFechar.addEventListener('click', function () {
+  janelaModal.style.display = 'none';
+  buttonsAdicionar.forEach(botao => botao.style.display = 'block');
+});
+
+const taskForm = document.getElementById('taskForm');
+const taskModal = document.getElementById('taskModal');
+
+// Mapeamento de valores para os textos das tags
+const categoryTextMap = {
+    'task__tag--coisas': 'Coisa das Cenas',
+    'task__tag--cenas': 'Coisas Coisantes',
+    'task__tag--ceninhas': 'Ceninhas'
+};
+
+taskForm.addEventListener('submit', function (event) {
+  event.preventDefault(); // Evita o recarregamento da página
+
+  const taskName = document.getElementById('taskName').value;
+  const taskCategory = document.getElementById('taskCategory').value;
+  const tagText = categoryTextMap[taskCategory]; // Obtém o texto correspondente ao valor selecionado
+
+  // Cria o elemento da nova tarefa
+  const newTask = document.createElement('div');
+  newTask.className = `task`; // Classe padrão da task
+  newTask.setAttribute('draggable', 'true');
+  newTask.innerHTML = `
+      <button class='task__delete'>x</button>
+      <div class='task__tags'>
+        <span class='task__tag ${taskCategory}'>${tagText}</span>
+        <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
+      </div>
+      <p>${taskName}</p>
+      <div class='task__stats'>
+        <span><time datetime="${new Date().toISOString()}"><i class="fas fa-flag"></i>${new Date().toLocaleDateString()}</time></span>
+      </div>
+  `;
+
+  // Insere a nova tarefa no primeiro div com a classe 'project-column'
+  const firstColumn = document.querySelector('.project-column');
+  const addTaskButton = firstColumn.querySelector('.task__add');
+  firstColumn.insertBefore(newTask, addTaskButton); // Insere a nova tarefa antes do botão "Add Task"
+
+  // Adiciona eventos de clique ao botão de excluir do novo card
+  const deleteButton = newTask.querySelector('.task__delete');
+  deleteButton.addEventListener('click', function () {
+      newTask.remove();
+      updateProgressBars(); // Atualiza as barras de progresso
   });
-  
 
-// Fechar o modal
-closeButton.addEventListener('click', function() {
-  modal.style.display = 'none';
-  addButtons.forEach(button => button.style.display = 'block'); // Exibe novamente todos os botões
+  // Adiciona eventos de arrastar e soltar à nova tarefa
+  addDragAndDropEvents([newTask]);
+
+  // Atualiza as barras de progresso
+  updateProgressBars();
+
+  // Limpa o formulário e fecha o modal
+  taskForm.reset();
+  taskModal.style.display = 'none';
+  document.querySelectorAll('.task__add').forEach(button => button.style.display = 'block');
 });
 
-// Fechar o modal ao clicar fora da janela modal
-window.addEventListener('click', function(event) {
-  if (event.target === modal) {
-    modal.style.display = 'none';
-    addButtons.forEach(button => button.style.display = 'block');
-  }
-});
-
-
-    // Atualizar ao carregar a página
-    updateProgressBars();
   });
