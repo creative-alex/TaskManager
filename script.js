@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const contextMenu = document.getElementById('customContextMenu');
   let draggedTask = null;
   let currentTask = null;
-  let taskIdCounter = 1; // Inicia o contador para IDs das tarefas
+  let taskIdCounter = 13; // Inicia o contador para IDs das tarefas
 
   // Função para iniciar o arraste
   function handleDragStart(e) {
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Limitar o log a 5 entradas
     const logItems = activityLog.querySelectorAll('li');
-    if (logItems.length > 5) {
+    if (logItems.length > 10) {
         activityLog.removeChild(logItems[logItems.length - 1]);
     }
   }
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
               'task__tag--ceninhas': 'Ceninhas',
           };
         
-            // Atualizar a tarefa
+            // Atualiza a tarefa
             currentTask.innerHTML = `
               <button class='task__delete'>x</button>
               <div class='task__tags'>
@@ -320,7 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'delete':
         if (currentTask) {
           const taskTitle = currentTask.querySelector('.task__title').textContent;
-          alert(`Excluindo a tarefa: ${taskTitle}`);
           currentTask.remove();
         }
         break;

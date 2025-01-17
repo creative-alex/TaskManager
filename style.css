@@ -232,7 +232,7 @@
     width: 24%;
     height: 100%;
     display: inline-block;
-    background-color: var(--white);
+    background-color: #ddfdef;
     vertical-align: top;
     padding: 3rem 2rem;
   }
