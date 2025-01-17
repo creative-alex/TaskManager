@@ -7,7 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const botaoFechar = document.querySelector('.close');
   const taskForm = document.getElementById('taskForm');
   const activityLog = document.getElementById('activity-log');  
+  const contextMenu = document.getElementById('customContextMenu');
   let draggedTask = null;
+  let currentTask = null;
+  let taskIdCounter = 1; // Inicia o contador para IDs das tarefas
 
   // Função para iniciar o arraste
   function handleDragStart(e) {
@@ -85,8 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  
-
   // Função para atualizar as barras de progresso
   function updateProgressBars() {
     const progressMapping = {
@@ -155,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newTask = document.createElement('div');
     newTask.className = 'task';
     newTask.setAttribute('draggable', 'true');
+    newTask.setAttribute('data-task-id', taskIdCounter++); // Atribui o ID único e incrementa o contador
     newTask.innerHTML = ` 
         <button class='task__delete'>x</button>
         <div class='task__tags'>
@@ -221,8 +223,133 @@ document.addEventListener('DOMContentLoaded', () => {
     buttonsAdicionar.forEach(button => button.style.display = 'block');
   });
 
-  // Função para adicionar o evento de exclusão às tarefas
-  function addDeleteEvent(task) {
+  // Menu de contexto
+  document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+    const task = event.target.closest('.task');
+    if (task) {
+      currentTask = task;
+      contextMenu.style.top = `${event.clientY}px`;
+      contextMenu.style.left = `${event.clientX}px`;
+      contextMenu.style.display = 'block';
+    } else {
+      contextMenu.style.display = 'none';
+    }
+  });
+
+  document.addEventListener('click', () => {
+    contextMenu.style.display = 'none';
+  });
+
+  contextMenu.addEventListener('click', (event) => {
+    event.preventDefault();
+    const action = event.target.dataset.action;
+    if (!action) return;
+
+    switch (action) {
+      case 'edit':
+        if (currentTask) {
+          const taskTitle = currentTask.querySelector('.task__title').textContent.trim();
+          const taskName = currentTask.querySelector('p').textContent.trim();
+          const taskCategory = currentTask.querySelector('.task__tag').classList[1];
+        
+          // Criar o formulário de edição
+          const editForm = document.createElement('form');
+          editForm.innerHTML = `
+            <input type="text" name="editTitle" id="edit-title" value="${taskTitle}" placeholder="Task Title" required />
+            <input type="text" name="editName" id="edit-name" value="${taskName}" placeholder="Task Description" required />
+            <select name="editCategory" id="edit-category" required>
+              <option value="task__tag--coisas" ${taskCategory === 'task__tag--coisas' ? 'selected' : ''}>Coisa das Cenas</option>
+              <option value="task__tag--cenas" ${taskCategory === 'task__tag--cenas' ? 'selected' : ''}>Coisas Coisantes</option>
+              <option value="task__tag--ceninhas" ${taskCategory === 'task__tag--ceninhas' ? 'selected' : ''}>Ceninhas</option>
+            </select>
+            <button type="submit" class="save-edit">Save</button>
+            <button type="button" class="cancel-edit">Cancel</button>
+          `;
+        
+          // Substituir o conteúdo da tarefa pelo formulário
+          currentTask.innerHTML = '';
+          currentTask.appendChild(editForm);
+        
+          // Cancelar edição
+          const cancelButton = editForm.querySelector('.cancel-edit');
+          cancelButton.addEventListener('click', () => {
+            restoreTaskView(currentTask, taskTitle, taskName, taskCategory);
+          });
+        
+          // Salvar edição
+          const saveButton = editForm.querySelector('.save-edit');
+          saveButton.addEventListener('click', (event) => {
+            event.preventDefault(); // Impede o envio padrão do formulário
+        
+            // Obter valores do formulário
+            const newTitle = editForm.querySelector('#edit-title').value.trim();
+            const newName = editForm.querySelector('#edit-name').value.trim();
+            const newCategory = editForm.querySelector('#edit-category').value;
+
+            const categoryTextMap = {
+              'task__tag--coisas': 'Coisa das Cenas',
+              'task__tag--cenas': 'Coisas Coisantes',
+              'task__tag--ceninhas': 'Ceninhas',
+          };
+        
+            // Atualizar a tarefa
+            currentTask.innerHTML = `
+              <button class='task__delete'>x</button>
+              <div class='task__tags'>
+                <span class='task__tag ${newCategory}'>${categoryTextMap[newCategory]}</span>
+                <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
+              </div>
+              <h2 class='task__title'>${newTitle}</h2>
+              <p>${newName}</p>
+              <div class='task__stats'>
+                <span><time datetime="${new Date().toISOString()}"><i class="fas fa-flag"></i>${new Date().toLocaleDateString()}</time></span>
+              </div>
+            `;
+        
+            // Registrar a edição no log
+            logActivity(currentTask, 'edited');
+        
+            // Reaplicar eventos
+            addDragAndDropEvents([currentTask]);
+        
+            // Limpar referência
+            currentTask = null;
+          });
+        }    
+      case 'delete':
+        if (currentTask) {
+          const taskTitle = currentTask.querySelector('.task__title').textContent;
+          alert(`Excluindo a tarefa: ${taskTitle}`);
+          currentTask.remove();
+        }
+        break;
+    
+      case 'move':
+        if (currentTask && event.target.dataset.targetColumn) {
+          const targetColumnSelector = event.target.dataset.targetColumn;
+          const targetColumn = document.querySelector(targetColumnSelector);
+    
+          if (targetColumn) {
+            const addTaskButton = targetColumn.querySelector('.task__add');
+            targetColumn.insertBefore(currentTask, addTaskButton);
+    
+            // Atualizar progresso e registrar a ação
+            updateProgressBars();
+            const newColumn = targetColumn.querySelector('.project-column-heading__title').textContent.trim();
+            logActivity(currentTask, newColumn);
+          }
+        }
+        break;
+    
+      default:
+        console.log('Ação desconhecida:', action);
+    }
+    contextMenu.style.display = 'none';
+  });
+
+  // Adicionar evento de exclusão a todas as tarefas existentes
+  taskElements.forEach(task => {
     const deleteButton = task.querySelector('.task__delete');
     if (deleteButton) {
       deleteButton.addEventListener('click', function () {
@@ -231,11 +358,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateProgressBars();
       });
     }
-  }
-
-  // Adicionar evento de exclusão a todas as tarefas existentes
-  taskElements.forEach(task => {
-    addDeleteEvent(task);
   });
 
   // Adicionar eventos de drag and drop às tarefas e colunas

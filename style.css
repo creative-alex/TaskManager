@@ -378,7 +378,7 @@
   color: #333;
 }
 
-#taskTitle{
+#taskTitle, #edit-title{
   width: 100%;
   height: 50px;
   padding: 10px;
@@ -388,11 +388,19 @@
   font-size: 14px;
 }
 
-#taskName {
+#taskName, #edit-name {
   width: 100%;
   height: 100px;
   padding: 10px;
-  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+#taskCategory, #edit-category {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
@@ -430,17 +438,6 @@
     text-decoration: none;
     cursor: pointer;
 }
-
-#taskCategory {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-
 
   @media only screen and (max-width: 1300px) {
     .project {
@@ -550,4 +547,37 @@
   }
   
 
+    /* Botão Save (primário) */
+    button[type="submit"] {
+      background-color: #4CAF50; /* Verde */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+  }
 
+  button[type="submit"]:hover {
+      background-color: #45a049; /* Verde escuro */
+      transform: scale(1.05);
+  }
+
+  /* Botão Cancel (secundário) */
+  .cancel-edit {
+      background-color: #f0f0f0; /* Cinza claro */
+      color: #333;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .cancel-edit:hover {
+      background-color: #e0e0e0; /* Cinza mais escuro */
+      color: #000;
+  }
