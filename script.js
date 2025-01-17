@@ -6,11 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const janelaModal = document.getElementById('taskModal');
   const botaoFechar = document.querySelector('.close');
   const taskForm = document.getElementById('taskForm');
-  const activityLog = document.getElementById('activity-log');
-  const customContextMenu = document.getElementById('custom-context-menu');
-  
+  const activityLog = document.getElementById('activity-log');  
   let draggedTask = null;
-  let selectedTask = null;
 
   // Função para iniciar o arraste
   function handleDragStart(e) {
@@ -88,6 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  
+
   // Função para atualizar as barras de progresso
   function updateProgressBars() {
     const progressMapping = {
@@ -128,6 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  updateProgressBars();
 
   // Função para adicionar os eventos de drag and drop às tarefas
   function addDragAndDropEvents(tasks) {
