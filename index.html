@@ -19,16 +19,22 @@
           </div>
           <div class='task' draggable='true'>
             <button class='task__delete'>x</button>
-            <div class='task__tags'><span class='task__tag task__tag--cenas'>Coisa das Cenas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <div class='task__tags'>
+              <span class='task__tag task__tag--cenas'>Coisa das Cenas</span>
+              <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
+            </div>
+            <h2 class="task__title">Título da Tarefa</h2> 
             <p>Konsep hero title yang menarik</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
             </div>
           </div>
           
+          
             <div class='task' draggable='true'>
                 <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--coisas'>Coisas Coisantes</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Icon di section our services</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -38,6 +44,7 @@
             <div class='task' draggable='true'>
             <button class='task__delete'>x</button>                
             <div class='task__tags'><span class='task__tag task__tag--cenas'>Coisa das Cenas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Konsep hero title yang menarik</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -49,7 +56,11 @@
                 <span class="close">&times;</span>
                 <h2>Create a new card!</h2>
                 <form id="taskForm">
+                  <label for="taskTitle">Título da Tarefa:</label>
+                  <input type="text" id="taskTitle" name="taskTitle" placeholder="Insira o título da tarefa" required> <!-- Input para título -->
+                  <label for="taskName">Nome da Tarefa:</label>
                   <input type="text" id="taskName" name="taskName" placeholder="What is the task?" required>
+                  <label for="taskCategory">Categoria:</label>
                   <select id="taskCategory" name="taskCategory" required>
                     <option value="task__tag--coisas">Coisa das Cenas</option>
                     <option value="task__tag--cenas">Coisas Coisantes</option>
@@ -58,6 +69,7 @@
                   <button type="submit">Adicionar</button>
                 </form>
               </div>
+              
             </div> 
         </div>
         <div class='project-column'><div class='project-column-heading'>
@@ -67,6 +79,7 @@
           <div class='task' draggable='true'>
             <button class='task__delete'>×</button>
             <div class='task__tags'><span class='task__tag task__tag--coisas'>Coisas Coisantes</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Replace lorem ipsum text in the final designs</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -76,6 +89,7 @@
           <div class='task' draggable='true'>
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--ceninhas'>Ceninhas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Create and generate the custom SVG illustrations.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -94,6 +108,7 @@
           <div class='task' draggable='true'>
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--ceninhas'>Ceninhas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Create the landing page graphics for the hero slider.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -108,6 +123,7 @@
           <div class='task' draggable='true'>
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--cenas'>Coisa das Cenas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Check the company we copied doesn't think we copied them.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -116,6 +132,7 @@
           <div class='task' draggable='true'>
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--coisas'>Coisas Coisantes</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Design the about page.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -124,6 +141,7 @@
           <div class='task' draggable='true'>
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--ceninhas'>Ceninhas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Move that one image 5px down to make Phil Happy.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -137,6 +155,7 @@
            <div class='task' draggable='true'>
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--ceninhas'>Ceninhas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Send Advert illustrations over to production company.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -146,6 +165,7 @@
            <div class='task' draggable='true'>
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--ceninhas'>Ceninhas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Dawn wants to move the text 3px to the right.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -156,6 +176,7 @@
 
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--cenas'>Coisa das Cenas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
+            <h2 class="task__title">Título da Tarefa</h2>
             <p>Amend the contract details.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -194,33 +215,7 @@
       </div>
       <div class='task-activity'>
         <h2>Recent Activity</h2>
-        <ul>
-          <li>
-            <span class='task-icon task-icon--attachment'><i class="fas fa-paperclip"></i></span>
-            <b>Andrea </b>uploaded 3 documents
-            <time datetime="2021-11-24T20:00:00">Aug 10</time>
-          </li>
-            <li>
-                <span class='task-icon task-icon--comment'><i class="fas fa-comment"></i></span>
-            <b>Karen </b> left a comment
-            <time datetime="2021-11-24T20:00:00">Aug 10</time>
-          </li>
-           <li>
-               <span class='task-icon task-icon--edit'><i class="fas fa-pencil-alt"></i></span>
-            <b>Karen </b>uploaded 3 documents
-            <time datetime="2021-11-24T20:00:00">Aug 11</time>
-          </li>
-            <li>
-                <span class='task-icon task-icon--attachment'><i class="fas fa-paperclip"></i></span>
-            <b>Andrea </b>uploaded 3 documents
-            <time datetime="2021-11-24T20:00:00">Aug 11</time>
-          </li>
-           <li>
-               <span class='task-icon task-icon--comment'><i class="fas fa-comment"></i></span>
-            <b>Karen </b> left a comment
-            <time datetime="2021-11-24T20:00:00">Aug 12</time>
-          </li>
-        </ul>
+        <ul id="activity-log"></ul>
       </div>
     </aside>
 
@@ -228,10 +223,17 @@
       <ul>
         <li data-action="edit">Edit</li>
         <li data-action="delete">Delete</li>
-        <li data-action="move">Move</li>
+        <li data-action="move">Move
+          <ul class="submenu">
+            <li data-action="new-tasks">New Tasks</li>
+            <li data-action="in-progress">In Progress</li>
+            <li data-action="needs-review">Needs Review</li>
+            <li data-action="done">Done</li>
+          </ul>
+        </li>
       </ul>
     </div>
-
+    
   
     
     
