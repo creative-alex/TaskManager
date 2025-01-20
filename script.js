@@ -241,6 +241,33 @@ document.addEventListener('DOMContentLoaded', () => {
     contextMenu.style.display = 'none';
   });
 
+
+  function restoreTaskView(task, title, name, category) {
+    const categoryTextMap = {
+        'task__tag--coisas': 'Coisa das Cenas',
+        'task__tag--cenas': 'Coisas Coisantes',
+        'task__tag--ceninhas': 'Ceninhas',
+    };
+
+    task.innerHTML = `
+        <button class='task__delete'>x</button>
+        <div class='task__tags'>
+            <span class='task__tag ${category}'>${categoryTextMap[category]}</span>
+            <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
+        </div>
+        <h2 class='task__title'>${title}</h2>
+        <p>${name}</p>
+        <div class='task__stats'>
+            <span><time datetime="${new Date().toISOString()}"><i class="fas fa-flag"></i>${new Date().toLocaleDateString()}</time></span>
+        </div>
+    `;
+
+    // Reaplicar eventos à tarefa restaurada
+    addDragAndDropEvents([task]);
+}
+
+
+
   contextMenu.addEventListener('click', (event) => {
     event.preventDefault();
     const action = event.target.dataset.action;
