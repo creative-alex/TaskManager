@@ -10,11 +10,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const taskForm = document.getElementById('taskForm');
   const activityLog = document.getElementById('activity-log');  
   const contextMenu = document.getElementById('customContextMenu');
+  const categorySearchSelect = document.getElementById('categorySearch');
+  const tasks = document.querySelectorAll('.task');
   let draggedTask = null;
   let currentTask = null;
   let taskIdCounter = 13; // Inicia o contador para IDs das tarefas
 
-  // Função para iniciar o arraste
+ 
+   // Função para filtrar tarefas por categoria
+   function filterTasksByCategory() {
+     const selectedCategory = categorySearchSelect.value;
+ 
+     tasks.forEach(task => {
+       // Localizar todos os spans com a classe `task__tag` dentro de `.task__tags`
+       const taskTags = task.querySelectorAll('.task__tags .task__tag');
+       
+       // Verificar se algum dos spans possui a classe correspondente
+       const hasMatchingTag = Array.from(taskTags).some(tag => tag.classList.contains(selectedCategory));
+ 
+       if (hasMatchingTag) {
+         task.classList.remove('hidden'); // Mostra a tarefa se houver correspondência
+       } else {
+         task.classList.add('hidden'); // Esconde a tarefa se não houver correspondência
+       }
+     });
+   }
+ 
+   // Event listener para o dropdown de categorias
+   categorySearchSelect.addEventListener('change', () => {
+     console.log(`Dropdown value changed to: ${categorySearchSelect.value}`); // Log para depuração
+     filterTasksByCategory();
+   });
+
+   // Função para iniciar o arraste
   function handleDragStart(e) {
     draggedTask = this;
     e.dataTransfer.effectAllowed = 'move';
