@@ -22,6 +22,10 @@
     --progress-done: #d6fcd6;
     --progress-done-value: #4caf50;
   }
+
+  .hidden{
+    display: none;
+  }
   
   * {
     margin: 0;

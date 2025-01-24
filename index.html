@@ -10,7 +10,13 @@
     <main class='project'>
       <div class='project-info'>
         <h1>Task Manager</h1>
-       
+        <input type="text" id="projectSearch" name="projectSearch" placeholder="Search Project by Title"> 
+        <select id="project id="projectCategorySearch" name="projectCategorySearch">
+          <option value="">All Projects</option>
+          <option value="task__tag--coisas">Coisa das Cenas</option>
+          <option value="task__tag--cenas">Coisas Coisantes</option>
+          <option value="task__tag--ceninhas">Ceninhas</option>
+        </select>             
       </div>
       <div class='project-tasks'>
         <div class='project-column'>
@@ -31,7 +37,7 @@
           </div>
           
           
-            <div class='task' draggable='true' data-task-id="2">
+            <div class='task' draggable='true' data-task-id="2" data-task="coisas" >
                 <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--coisas'>Coisas Coisantes</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
             <h2 class="task__title">Task Title</h2>
@@ -76,7 +82,7 @@
             <h2 class='project-column-heading__title'>In Progress</h2><button class='project-column-heading__options'><i class="fas fa-ellipsis-h"></i></button>
           </div>
             
-          <div class='task' draggable='true' data-task-id="4">
+          <div class='task' draggable='true' data-task-id="4" data-task="coisas">
             <button class='task__delete'>×</button>
             <div class='task__tags'><span class='task__tag task__tag--coisas'>Coisas Coisantes</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
             <h2 class="task__title">Task Title</h2>
@@ -130,7 +136,7 @@
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
             </div>
           </div>
-          <div class='task' draggable='true' data-task-id="9">
+          <div class='task' draggable='true' data-task-id="9" data-task="coisas">
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--coisas'>Coisas Coisantes</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
             <h2 class="task__title">Task Title</h2>
