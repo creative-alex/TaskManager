@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let draggedTask = null;
   let currentTask = null;
   let taskIdCounter = 13; // Inicia o contador para IDs das tarefas
-
+ 
   // Função para iniciar o arraste
   function handleDragStart(e) {
     draggedTask = this;
@@ -146,15 +146,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // Função para adicionar a nova tarefa ao sistema
   function addNewTask(taskTitle, taskName, taskCategory) {
     const categoryTextMap = {
-        'task__tag--coisas': 'Coisa das Cenas',
-        'task__tag--cenas': 'Coisas Coisantes',
+        'task__tag--coisas': 'Coisas Coisantes',
+        'task__tag--cenas': 'Coisa das Cenas',
         'task__tag--ceninhas': 'Ceninhas',
     };
 
+    const categoryClassMap = {
+        'task__tag--coisas': 'coisas',
+        'task__tag--cenas': 'cenas',
+        'task__tag--ceninhas': 'ceninhas',
+    };
+
     const tagText = categoryTextMap[taskCategory] || 'Categoria Desconhecida';
+    const categoryClass = categoryClassMap[taskCategory] || 'categoria-desconhecida';
 
     const newTask = document.createElement('div');
-    newTask.className = 'task';
+    newTask.className = `task ${categoryClass}`; // Adiciona a classe correspondente à categoria
     newTask.setAttribute('draggable', 'true');
     newTask.setAttribute('data-task-id', taskIdCounter++); // Atribui o ID único e incrementa o contador
     newTask.innerHTML = ` 
@@ -190,7 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Registro ao criar a tarefa
     logActivity(newTask, 'created');
-  }
+}
+
+
 
   // Eventos para adicionar tarefas
   buttonsAdicionar.forEach(botao => {
@@ -393,4 +402,44 @@ document.addEventListener('DOMContentLoaded', () => {
     column.addEventListener('dragover', handleDragOver, false);
     column.addEventListener('drop', handleDrop, false);
   });  
+
+// Função para filtrar as tasks com base na categoria selecionada
+function filterTasksByCategory(selectedValue) {
+    // Se "All Projects" estiver selecionado, mostra todas as divs
+    if (selectedValue === "") {
+        document.querySelectorAll(".coisas, .coisinhas, .cenas").forEach(category => {
+            category.classList.remove("hidden");
+        });
+    } else if (selectedValue === "coisas") {
+        document.querySelectorAll(".ceninhas, .cenas").forEach(category => {
+            category.classList.add("hidden");
+        });
+        document.querySelectorAll(".coisas").forEach(category => {
+            category.classList.remove("hidden");
+        });
+    } else if (selectedValue === "cenas") {
+        document.querySelectorAll(".coisas, .ceninhas").forEach(category => {
+            category.classList.add("hidden");
+        });
+        document.querySelectorAll(".cenas").forEach(category => {
+            category.classList.remove("hidden");
+        });
+    } else if (selectedValue === "ceninhas") {
+        document.querySelectorAll(".coisas, .cenas").forEach(category => {
+            category.classList.add("hidden");
+        });
+        document.querySelectorAll(".ceninhas").forEach(category => {
+            category.classList.remove("hidden");
+        });
+    }
+}
+
+document.getElementById("projectCategorySearch").addEventListener("change", function () {
+    const selectedValue = document.getElementById("projectCategorySearch").value;
+    filterTasksByCategory(selectedValue);
+});
+
+
+
+
 });

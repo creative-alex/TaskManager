@@ -10,12 +10,11 @@
     <main class='project'>
       <div class='project-info'>
         <h1>Task Manager</h1>
-        <input type="text" id="projectSearch" name="projectSearch" placeholder="Search Project by Title"> 
-        <select id="project id="projectCategorySearch" name="projectCategorySearch">
+        <select id="projectCategorySearch" name="projectCategorySearch" class="styled-select">
           <option value="">All Projects</option>
-          <option value="task__tag--coisas">Coisa das Cenas</option>
-          <option value="task__tag--cenas">Coisas Coisantes</option>
-          <option value="task__tag--ceninhas">Ceninhas</option>
+          <option value="coisas">Coisas Coisantes</option>
+          <option value="cenas">Coisa das Cenas</option>
+          <option value="ceninhas">Ceninhas</option>
         </select>             
       </div>
       <div class='project-tasks'>
@@ -23,13 +22,13 @@
           <div class='project-column-heading'>
             <h2 class='project-column-heading__title' id="responsive-heading">New Tasks</h2><button class='project-column-heading__options'><i class="fas fa-ellipsis-h"></i></button>
           </div>
-          <div class='task' draggable='true' data-task-id="1">
+          <div class='task cenas' draggable='true' data-task-id="1">
             <button class='task__delete'>x</button>
             <div class='task__tags'>
               <span class='task__tag task__tag--cenas'>Coisa das Cenas</span>
               <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
             </div>
-            <h2 class="task__title" >Task Title</h2> 
+            <h2 class="task__title" >Develop an Engaging Hero Title</h2> 
             <p>Konsep hero title yang menarik</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -37,20 +36,20 @@
           </div>
           
           
-            <div class='task' draggable='true' data-task-id="2" data-task="coisas" >
+            <div class='task coisas' draggable='true' data-task-id="2"  >
                 <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--coisas'>Coisas Coisantes</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Update Icon in the "Our Services" Section</h2>
             <p>Icon di section our services</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
             </div>
           </div>
           
-            <div class='task' draggable='true' data-task-id="3">
+            <div class='task cenas' draggable='true' data-task-id="3">
             <button class='task__delete'>x</button>                
             <div class='task__tags'><span class='task__tag task__tag--cenas'>Coisa das Cenas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Design a Creative Hero Title Concept</h2>
             <p>Konsep hero title yang menarik</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -64,7 +63,7 @@
                 <form id="taskForm">
                   <label for="taskTitle">Título da Tarefa:</label>
                   <input type="text" id="taskTitle" name="taskTitle" placeholder="Insira o título da tarefa" required> 
-                  <label for="taskName">Nome da Tarefa:</label>
+                  <label for="taskName">Corpo da Tarefa:</label>
                   <input type="text" id="taskName" name="taskName" placeholder="What is the task?" required>
                   <label for="taskCategory">Categoria:</label>
                   <select id="taskCategory" name="taskCategory" required>
@@ -82,40 +81,40 @@
             <h2 class='project-column-heading__title' >In Progress</h2><button class='project-column-heading__options'><i class="fas fa-ellipsis-h"></i></button>
           </div>
             
-          <div class='task' draggable='true' data-task-id="4" data-task="coisas">
+          <div class='task coisas' draggable='true' data-task-id="4">
             <button class='task__delete'>×</button>
             <div class='task__tags'><span class='task__tag task__tag--coisas'>Coisas Coisantes</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Replace Lorem Ipsum Text</h2>
             <p>Replace lorem ipsum text in the final designs</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
             </div>
           </div>
           
-          <div class='task' draggable='true' data-task-id="5">
+          <div class='task ceninhas' draggable='true' data-task-id="5" >
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--ceninhas'>Ceninhas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Create Custom SVG Illustrations</h2>
             <p>Create and generate the custom SVG illustrations.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
             </div>
           </div>
           
-          <div class='task' draggable='true' data-task-id="6">
+          <div class='task cenas' draggable='true' data-task-id="6">
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--cenas'>Coisa das Cenas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Review Legal Page for Loopholes</h2>
             <p>Proof read the legal page and check for and loopholes</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
             </div>
           </div>
           
-          <div class='task' draggable='true' data-task-id="7">
+          <div class='task ceninhas' draggable='true' data-task-id="7">
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--ceninhas'>Ceninhas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Design Landing Page Graphics for Hero Slider</h2>
             <p>Create the landing page graphics for the hero slider.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -127,28 +126,28 @@
             <h2 class='project-column-heading__title'>Needs Review</h2><button class='project-column-heading__options'><i class="fas fa-ellipsis-h"></i></button>
           </div>
             
-          <div class='task' draggable='true' data-task-id="8">
+          <div class='task cenas' draggable='true' data-task-id="8">
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--cenas'>Coisa das Cenas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Check for Plagiarism Risks with Competitors</h2>
             <p>Check the company we copied doesn't think we copied them.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
             </div>
           </div>
-          <div class='task' draggable='true' data-task-id="9" data-task="coisas">
+          <div class='task coisas' draggable='true' data-task-id="9">
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--coisas'>Coisas Coisantes</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Design the "About Us" Page</h2>
             <p>Design the about page.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
             </div>
           </div>
-          <div class='task' draggable='true' data-task-id="10">
+          <div class='task ceninhas' draggable='true' data-task-id="10">
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--ceninhas'>Ceninhas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Move Image</h2>
             <p>Move that one image 5px down to make Phil Happy.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
@@ -159,31 +158,30 @@
             <h2 class='project-column-heading__title' id="tablet-heading">Done</h2><button class='project-column-heading__options'><i class="fas fa-ellipsis-h"></i></button>
           </div>
           
-           <div class='task' draggable='true' data-task-id="11">
+           <div class='task ceninhas' draggable='true' data-task-id="11">
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--ceninhas'>Ceninhas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Send Advert Illustrations</h2>
             <p>Send Advert illustrations over to production company.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
             </div>
           </div>
           
-           <div class='task' draggable='true' data-task-id="12">
+           <div class='task ceninhas' draggable='true' data-task-id="12">
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--ceninhas'>Ceninhas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Move Text</h2>
             <p>Dawn wants to move the text 3px to the right.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
             </div>
           </div>
           
-           <div class='task' draggable='true' data-task-id="13">
-
+           <div class='task cenas' draggable='true' data-task-id="13">
             <button class='task__delete'>x</button>
             <div class='task__tags'><span class='task__tag task__tag--cenas'>Coisa das Cenas</span><button class='task__options'><i class="fas fa-ellipsis-h"></i></button></div>
-            <h2 class="task__title">Task Title</h2>
+            <h2 class="task__title">Amend Contract Details</h2>
             <p>Amend the contract details.</p>
             <div class='task__stats'>
               <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
