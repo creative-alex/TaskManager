@@ -465,7 +465,7 @@
     }
   }
   
-  @media only screen and (max-width: 1000px) {
+  @media   (max-width: 1000px) {
     .project-column:nth-child(2),
     .project-column:nth-child(3) {
       display: none;
@@ -581,3 +581,28 @@
       background-color: #e0e0e0; /* Cinza mais escuro */
       color: #000;
   }
+
+  #responsive-select, #tablet-dropdown {
+    background-color: #fef8d6; /* Cor de fundo suave */
+    border: none;
+    font-size: 1.5em; /* Tamanho da fonte semelhante ao h2 */
+    font-weight: bold;
+    padding: 12px 20px; /* Padding generoso */
+    border-radius: 8px; /* Bordas arredondadas */
+    color: #333; /* Cor do texto */
+    transition: background-color 0.3s, transform 0.3s ease-in-out; /* Efeitos de transição */
+  }
+  
+  #responsive-select:focus, #tablet-dropdown:focus {
+    outline: none; /* Remove o contorno ao focar */
+    background-color: #c9c8ff; /* Cor de fundo ao focar */
+    transform: scale(1.05); /* Leve aumento de tamanho ao focar */
+  }
+  
+  #responsive-select option, #tablet-dropdown option {
+    font-size: 1em;
+    padding: 10px;
+    background-color: #f8d6fe; /* Cor de fundo das opções */
+    color: #333;
+  }
+  
