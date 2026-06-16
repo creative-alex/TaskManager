@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const activityLog = document.getElementById('activity-log');  
   const contextMenu = document.getElementById('customContextMenu');
   let draggedTask = null;
+  let dragPlaceholder = null;
   let currentTask = null;
   let taskIdCounter = 13; // Inicia o contador para IDs das tarefas
  
@@ -18,21 +19,24 @@ document.addEventListener('DOMContentLoaded', () => {
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/html', this.outerHTML);
 
-    // Ocultar a tarefa durante o arraste
+    dragPlaceholder = document.createElement('div');
+    dragPlaceholder.className = 'drag-placeholder';
+    dragPlaceholder.style.height = this.offsetHeight + 'px';
+
     setTimeout(() => {
-      this.style.display = 'none';
+      this.style.opacity = '0.4';
+      this.parentNode.insertBefore(dragPlaceholder, this.nextSibling);
     }, 0);
   }
 
   // Função para finalizar o arraste
   function handleDragEnd() {
-    this.style.display = 'block';
+    this.style.opacity = '';
+    if (dragPlaceholder) {
+      dragPlaceholder.remove();
+      dragPlaceholder = null;
+    }
     draggedTask = null;
-
-    // Remover classe de hover
-    taskElements.forEach((item) => {
-      item.classList.remove('task-hover');
-    });
   }
 
   // Função para permitir o arraste sobre a coluna
@@ -45,21 +49,21 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleDrop(e) {
     e.preventDefault();
 
-    if (draggedTask) {
-        const column = this.closest('.project-column');
-        const addTaskButton = column.querySelector('.task__add');
-        column.insertBefore(draggedTask, addTaskButton);
+    if (!draggedTask || !dragPlaceholder) return;
 
-        // Atualizar barras de progresso e eventos
-        updateProgressBars();
-        addDragAndDropEvents(column.querySelectorAll('.task'));
+    dragPlaceholder.parentNode.insertBefore(draggedTask, dragPlaceholder);
+    dragPlaceholder.remove();
+    dragPlaceholder = null;
 
-        // Log de atividades usando o título da tarefa
-        const newColumn = column.querySelector('.project-column-heading__title').textContent.trim();
-        logActivity(draggedTask, newColumn);
+    const column = draggedTask.closest('.project-column');
+    updateProgressBars();
+    addDragAndDropEvents(column.querySelectorAll('.task'));
+    const newColumn = column.querySelector('.project-column-heading__title').textContent.split(' · ')[0].trim();
+    logActivity(draggedTask, newColumn);
+    saveTasks();
+    filterTasksByCategory(document.getElementById('projectCategorySearch').value);
 
-        draggedTask = null;
-    }
+    draggedTask = null;
   }
 
   // Função para registrar a atividade no log
@@ -125,19 +129,132 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBar.max = totalTasks > 0 ? totalTasks : 1;
         progressBar.value = taskCount;
         progressText.textContent = `${progressBar.value}/${progressBar.max}`;
+
+        // Atualizar contador no cabeçalho
+        const titleEl = column.querySelector('.project-column-heading__title');
+        if (titleEl) titleEl.textContent = `${key} · ${taskCount}`;
+
+        // Estado vazio
+        const emptyEl = column.querySelector('.column-empty');
+        if (taskCount === 0 && !emptyEl) {
+          const empty = document.createElement('p');
+          empty.className = 'column-empty';
+          empty.textContent = 'Sem tarefas aqui';
+          column.insertBefore(empty, column.querySelector('.task__add'));
+        } else if (taskCount > 0 && emptyEl) {
+          emptyEl.remove();
+        }
       }
     });
   }
 
+  // Guardar tarefas no localStorage
+  function saveTasks() {
+    const data = [];
+    columns.forEach((column, columnIndex) => {
+      column.querySelectorAll('.task').forEach(task => {
+        const tagSpan = task.querySelector('.task__tag');
+        const tagClass = tagSpan ? tagSpan.classList[1] : 'task__tag--coisas';
+        const dateEl = task.querySelector('time');
+        data.push({
+          id: task.getAttribute('data-task-id'),
+          title: task.querySelector('.task__title').textContent.trim(),
+          description: task.querySelector('p').textContent.trim(),
+          tagClass: tagClass,
+          columnIndex: columnIndex,
+          date: dateEl ? dateEl.getAttribute('datetime') : new Date().toISOString()
+        });
+      });
+    });
+    localStorage.setItem('taskmanager-tasks', JSON.stringify(data));
+  }
+
+  // Carregar tarefas do localStorage
+  function loadTasks() {
+    const saved = localStorage.getItem('taskmanager-tasks');
+    if (!saved) {
+      saveTasks();
+      return;
+    }
+
+    const tasks = JSON.parse(saved);
+
+    columns.forEach(column => {
+      column.querySelectorAll('.task').forEach(task => task.remove());
+    });
+
+    const textMap = {
+      'task__tag--coisas': 'Coisas Coisantes',
+      'task__tag--cenas': 'Coisa das Cenas',
+      'task__tag--ceninhas': 'Ceninhas',
+    };
+    const classMap = {
+      'task__tag--coisas': 'coisas',
+      'task__tag--cenas': 'cenas',
+      'task__tag--ceninhas': 'ceninhas',
+    };
+
+    tasks.forEach(taskData => {
+      const column = columns[taskData.columnIndex];
+      if (!column) return;
+
+      const categoryClass = classMap[taskData.tagClass] || 'coisas';
+      const tagText = textMap[taskData.tagClass] || 'Categoria';
+
+      const taskEl = document.createElement('div');
+      taskEl.className = `task ${categoryClass}`;
+      taskEl.setAttribute('draggable', 'true');
+      taskEl.setAttribute('data-task-id', taskData.id);
+      taskEl.innerHTML = `
+        <button class='task__delete'>x</button>
+        <div class='task__tags'>
+          <span class='task__tag ${taskData.tagClass}'>${tagText}</span>
+          <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
+        </div>
+        <h2 class='task__title'>${taskData.title}</h2>
+        <p>${taskData.description}</p>
+        <div class='task__stats'>
+          <span><time datetime="${taskData.date}"><i class="fas fa-flag"></i>${new Date(taskData.date).toLocaleDateString()}</time></span>
+        </div>
+      `;
+
+      const addTaskButton = column.querySelector('.task__add');
+      column.insertBefore(taskEl, addTaskButton);
+
+      taskEl.querySelector('.task__delete').addEventListener('click', function () {
+        taskEl.remove();
+        logActivity(taskEl, 'deleted');
+        updateProgressBars();
+        saveTasks();
+      });
+
+      addDragAndDropEvents([taskEl]);
+    });
+
+    if (tasks.length > 0) {
+      const maxId = Math.max(...tasks.map(t => parseInt(t.id) || 0));
+      if (maxId >= taskIdCounter) taskIdCounter = maxId + 1;
+    }
+  }
+
+  loadTasks();
   updateProgressBars();
 
   // Função para adicionar os eventos de drag and drop às tarefas
   function addDragAndDropEvents(tasks) {
     tasks.forEach((task) => {
       task.addEventListener('dragstart', handleDragStart, false);
-      task.addEventListener('dragenter', () => task.classList.add('task-hover'), false);
-      task.addEventListener('dragover', handleDragOver, false);
-      task.addEventListener('dragleave', () => task.classList.remove('task-hover'), false);
+      task.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!dragPlaceholder || task === draggedTask) return;
+        const rect = task.getBoundingClientRect();
+        if (e.clientY < rect.top + rect.height / 2) {
+          task.parentNode.insertBefore(dragPlaceholder, task);
+        } else {
+          task.parentNode.insertBefore(dragPlaceholder, task.nextSibling);
+        }
+      }, false);
       task.addEventListener('drop', handleDrop, false);
       task.addEventListener('dragend', handleDragEnd, false);
     });
@@ -187,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
         newTask.remove();
         logActivity(newTask, 'deleted'); // Registro ao excluir a tarefa
         updateProgressBars();
+        saveTasks();
     });
 
     // Adicionar eventos de arrastar e soltar
@@ -197,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Registro ao criar a tarefa
     logActivity(newTask, 'created');
+    saveTasks();
 }
 
 
@@ -253,8 +372,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function restoreTaskView(task, title, name, category) {
     const categoryTextMap = {
-        'task__tag--coisas': 'Coisa das Cenas',
-        'task__tag--cenas': 'Coisas Coisantes',
+        'task__tag--coisas': 'Coisas Coisantes',
+        'task__tag--cenas': 'Coisa das Cenas',
         'task__tag--ceninhas': 'Ceninhas',
     };
 
@@ -271,7 +390,13 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     `;
 
-    // Reaplicar eventos à tarefa restaurada
+    task.querySelector('.task__delete').addEventListener('click', function () {
+        task.remove();
+        logActivity(task, 'deleted');
+        updateProgressBars();
+        saveTasks();
+    });
+
     addDragAndDropEvents([task]);
 }
 
@@ -295,8 +420,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <input type="text" name="editTitle" id="edit-title" value="${taskTitle}" placeholder="Task Title" required />
             <input type="text" name="editName" id="edit-name" value="${taskName}" placeholder="Task Description" required />
             <select name="editCategory" id="edit-category" required>
-              <option value="task__tag--coisas" ${taskCategory === 'task__tag--coisas' ? 'selected' : ''}>Coisa das Cenas</option>
-              <option value="task__tag--cenas" ${taskCategory === 'task__tag--cenas' ? 'selected' : ''}>Coisas Coisantes</option>
+              <option value="task__tag--coisas" ${taskCategory === 'task__tag--coisas' ? 'selected' : ''}>Coisas Coisantes</option>
+              <option value="task__tag--cenas" ${taskCategory === 'task__tag--cenas' ? 'selected' : ''}>Coisa das Cenas</option>
               <option value="task__tag--ceninhas" ${taskCategory === 'task__tag--ceninhas' ? 'selected' : ''}>Ceninhas</option>
             </select>
             <button type="submit" class="save-edit">Save</button>
@@ -324,11 +449,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const newCategory = editForm.querySelector('#edit-category').value;
 
             const categoryTextMap = {
-              'task__tag--coisas': 'Coisa das Cenas',
-              'task__tag--cenas': 'Coisas Coisantes',
+              'task__tag--coisas': 'Coisas Coisantes',
+              'task__tag--cenas': 'Coisa das Cenas',
               'task__tag--ceninhas': 'Ceninhas',
-          };
-        
+            };
+
             // Atualiza a tarefa
             currentTask.innerHTML = `
               <button class='task__delete'>x</button>
@@ -342,21 +467,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span><time datetime="${new Date().toISOString()}"><i class="fas fa-flag"></i>${new Date().toLocaleDateString()}</time></span>
               </div>
             `;
-        
-            // Registrar a edição no log
+
+            const saved = currentTask;
+            saved.querySelector('.task__delete').addEventListener('click', function () {
+              saved.remove();
+              logActivity(saved, 'deleted');
+              updateProgressBars();
+              saveTasks();
+            });
+
             logActivity(currentTask, 'edited');
-        
-            // Reaplicar eventos
             addDragAndDropEvents([currentTask]);
-        
-            // Limpar referência
+            saveTasks();
+
             currentTask = null;
           });
-        }    
+        }
+        break;
       case 'delete':
         if (currentTask) {
-          const taskTitle = currentTask.querySelector('.task__title').textContent;
           currentTask.remove();
+          saveTasks();
+          updateProgressBars();
         }
         break;
     
@@ -371,8 +503,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
             // Atualizar progresso e registrar a ação
             updateProgressBars();
-            const newColumn = targetColumn.querySelector('.project-column-heading__title').textContent.trim();
+            const newColumn = targetColumn.querySelector('.project-column-heading__title').textContent.split(' · ')[0].trim();
             logActivity(currentTask, newColumn);
+            saveTasks();
+            filterTasksByCategory(document.getElementById('projectCategorySearch').value);
           }
         }
         break;
@@ -391,6 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
         task.remove();
         logActivity(task, 'deleted'); // Registro ao excluir a tarefa
         updateProgressBars();
+        saveTasks();
       });
     }
   });
@@ -399,7 +534,12 @@ document.addEventListener('DOMContentLoaded', () => {
   addDragAndDropEvents(taskElements);
 
   columns.forEach((column) => {
-    column.addEventListener('dragover', handleDragOver, false);
+    column.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      if (!dragPlaceholder) return;
+      const addTaskButton = column.querySelector('.task__add');
+      column.insertBefore(dragPlaceholder, addTaskButton);
+    }, false);
     column.addEventListener('drop', handleDrop, false);
   });  
 
@@ -407,7 +547,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function filterTasksByCategory(selectedValue) {
     // Se "All Projects" estiver selecionado, mostra todas as divs
     if (selectedValue === "") {
-        document.querySelectorAll(".coisas, .coisinhas, .cenas").forEach(category => {
+        document.querySelectorAll(".coisas, .ceninhas, .cenas").forEach(category => {
             category.classList.remove("hidden");
         });
     } else if (selectedValue === "coisas") {

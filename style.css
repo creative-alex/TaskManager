@@ -125,6 +125,24 @@
     cursor: pointer;
   }
   
+  .drag-placeholder {
+    border: 2px dashed var(--purple);
+    border-radius: 8px;
+    background: rgba(119, 132, 238, 0.08);
+    margin-bottom: 1rem;
+    transition: height 0.15s ease;
+  }
+
+  .column-empty {
+    text-align: center;
+    color: var(--light-grey);
+    font-size: 14px;
+    padding: 2rem 1rem;
+    border: 2px dashed var(--light-grey);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
   .task {
     position: relative;
     cursor: move;
@@ -135,6 +153,7 @@
     box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
     margin-bottom: 1rem;
     border: 3px dashed transparent;
+    transition: opacity 0.15s ease;
   }
 
   .task__add {
